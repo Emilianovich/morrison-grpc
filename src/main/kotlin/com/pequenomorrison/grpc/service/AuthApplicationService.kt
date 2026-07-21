@@ -21,8 +21,10 @@ class AuthApplicationService(
     private val sessions: SessionRepository,
     private val passwordEncoder: PasswordEncoder,
     @Value("\${app.auth.session-duration:PT24H}") private val sessionDuration: Duration,
-    @Value("\${app.auth.minimum-initial-balance-in-cents:10000}") private val minimumInitialBalance: Long,
-    @Value("\${app.auth.maximum-initial-balance-in-cents:1000000}") private val maximumInitialBalance: Long,
+    @Value("\${app.auth.minimum-initial-balance-in-cents}")
+    private val minimumInitialBalance: Long,
+    @Value("\${app.auth.maximum-initial-balance-in-cents}")
+    private val maximumInitialBalance: Long,
 ) {
     data class LoginResult(val sessionId: UUID, val clientName: String)
 
