@@ -26,8 +26,8 @@ spring:
 app:
   auth:
     session-duration: ${SESSION_DURATION:PT24H}
-    minimum-initial-balance-in-cents: ${MIN_INITIAL_BALANCE_IN_CENTS:15000}
-    maximum-initial-balance-in-cents: ${MAX_INITIAL_BALANCE_IN_CENTS:1000000}
+    minimum-initial-balance-in-cents: ${MIN_INITIAL_BALANCE_IN_CENTS:10000}
+    maximum-initial-balance-in-cents: ${MAX_INITIAL_BALANCE_IN_CENTS:50000}
 
 logging:
   level:
