@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: morrison-grpc
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:pequeno_morrison}
+    username: ${DB_USER:pequeno_morrison}
+    password: ${DB_PASSWORD:pequeno_morrison}
+    hikari:
+      maximum-pool-size: ${DB_POOL_SIZE:10}
+      minimum-idle: ${DB_POOL_MIN_IDLE:2}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+        format_sql: false
+  grpc:
+    server:
+      port: ${GRPC_PORT:50051}
+      reflection:
+        enabled: true
+
+app:
+  auth:
+    session-duration: ${SESSION_DURATION:PT24H}
+    minimum-initial-balance-in-cents: ${MIN_INITIAL_BALANCE_IN_CENTS:15000}
+    maximum-initial-balance-in-cents: ${MAX_INITIAL_BALANCE_IN_CENTS:1000000}
+
+logging:
+  level:
+    root: INFO
+    com.pequenomorrison: INFO
+    org.hibernate.SQL: WARN

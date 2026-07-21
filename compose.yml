@@ -1,0 +1,56 @@
+services:
+  postgres:
+    build:
+      context: ./db
+      dockerfile: Dockerfile
+    image: pequeno-morrison-postgres:latest
+    environment:
+      POSTGRES_DB: pequeno_morrison
+      POSTGRES_USER: pequeno_morrison
+      POSTGRES_PASSWORD: pequeno_morrison
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U pequeno_morrison -d pequeno_morrison",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - morrison-network
+    restart: unless-stopped
+
+  morrison-grpc:
+    build: .
+    image: morrison-grpc:2.0.0
+    container_name: morrison-grpc
+    environment:
+      GRPC_PORT: 50051
+
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: pequeno_morrison
+      DB_USER: pequeno_morrison
+      DB_PASSWORD: pequeno_morrison
+
+      MIN_INITIAL_BALANCE_IN_CENTS: 15000
+      MAX_INITIAL_BALANCE_IN_CENTS: 1000000
+      SESSION_DURATION: PT24H
+    ports:
+      - "50051:50051"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - morrison-network
+    restart: unless-stopped
+
+networks:
+  morrison-network:
+    driver: bridge
+
+volumes:
+  postgres-data:
