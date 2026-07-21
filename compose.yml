@@ -4,6 +4,7 @@ services:
       context: ./db
       dockerfile: Dockerfile
     image: pequeno-morrison-postgres:latest
+    container_name: postgres
     environment:
       POSTGRES_DB: pequeno_morrison
       POSTGRES_USER: pequeno_morrison
@@ -24,7 +25,9 @@ services:
     restart: unless-stopped
 
   morrison-grpc:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     image: morrison-grpc:2.0.0
     container_name: morrison-grpc
     environment:
@@ -50,7 +53,8 @@ services:
 
 networks:
   morrison-network:
-    driver: bridge
+    external: true
+    name: morrison-network
 
 volumes:
   postgres-data:
